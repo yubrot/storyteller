@@ -9,9 +9,12 @@
   "author": "yubrot",
   "license": "BSD-3-Clause",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "npm run dev:graphql & npm run dev:next",
+    "dev:graphql": "graphql-codegen --watch",
+    "dev:next": "next dev",
+    "build": "npm run build:graphql && npm run build:next",
+    "build:graphql": "graphql-codegen",
+    "build:next": "next build && next export",
     "lint": "next lint"
   },
   "dependencies": {
@@ -20,6 +23,10 @@
     "react-dom": "18.1.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/typescript": "^2.4.11",
+    "@graphql-codegen/typescript-generic-sdk": "^2.3.10",
+    "@graphql-codegen/typescript-operations": "^2.4.0",
     "@types/node": "17.0.35",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.4",

@@ -1,0 +1,45 @@
+query repositoryIssues(
+  $owner: String!
+  $name: String!
+  $count: Int!
+  $after: String
+  $filters: IssueFilters
+) {
+  repository(owner: $owner, name: $name) {
+    issues(first: $count, after: $after, filterBy: $filters) {
+      edges {
+        cursor
+        node {
+          number
+          title
+          url
+          createdAt
+          updatedAt
+          closedAt
+          # NOTE: This does not support more than 50 assignees
+          assignees(first: 50) {
+            nodes {
+              login
+              name
+              url
+              avatarUrl(size: 20)
+            }
+          }
+          # NOTE: This does not support more than 50 labels
+          labels(first: 50) {
+            nodes {
+              id
+              color
+              name
+              url
+            }
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}
