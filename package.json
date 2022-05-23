@@ -2,6 +2,12 @@
   "name": "storyteller",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yubrot/storyteller.git"
+  },
+  "author": "yubrot",
+  "license": "BSD-3-Clause",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
