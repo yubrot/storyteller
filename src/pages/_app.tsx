@@ -1,3 +1,4 @@
+import '../globals.css';
 import '../loaders/file';
 import '../loaders/github';
 import type { AppProps } from 'next/app';

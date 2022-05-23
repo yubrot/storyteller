@@ -1,0 +1,11 @@
+@tailwind components;
+
+.ladle-main {
+  @apply bg-white;
+}
+.ladle-aside {
+  @apply bg-gray-100 border-l border-gray-300 p-4;
+}
+.ladle-addons li {
+  @apply bg-gray-100;
+}

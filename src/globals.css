@@ -1,0 +1,34 @@
+@tailwind base;
+
+body {
+  @apply bg-gray-100 text-gray-900;
+}
+
+a {
+  @apply text-emerald-600 hover:text-emerald-400 transition;
+}
+
+@tailwind components;
+
+.button {
+  @apply transition cursor-pointer disabled:cursor-default disabled:pointer-events-none focus:outline-none;
+}
+
+.card {
+  @apply bg-white shadow-md rounded-md p-1 border border-gray-200;
+}
+
+@tailwind utilities;
+
+.dropdown-entrypoint-true::after {
+  content: '';
+  @apply fixed z-10 cursor-default inset-0;
+}
+
+.dropdown-popover-false {
+  @apply absolute z-20 opacity-0 pointer-events-none;
+}
+
+.dropdown-popover-true {
+  @apply absolute z-20 opacity-100;
+}
