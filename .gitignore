@@ -33,4 +33,6 @@ yarn-error.log*
 *.tsbuildinfo
 
 # storyteller
+.example/*.json
 src/loaders/github/sdk.ts
+.workspace.json

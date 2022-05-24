@@ -6,6 +6,8 @@ Work in progress
 
 | name                              | default | description                                                               |
 | --------------------------------- | ------- | ------------------------------------------------------------------------- |
+| `SOURCES`                         | -       | A sequence of source locator separated by `,`.                            |
+| `NEXT_PUBLIC_RECENT_DAYS`         | `30`    | Range of days highlighted in a darker color on the progress summary bar.  |
 | `NEXT_PUBLIC_DEFAULT_STORY_POINT` | `1`     | Default story point for tasks for which no story point has been assigned. |
 
 ## Available source locator types

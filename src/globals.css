@@ -18,6 +18,19 @@ a {
   @apply bg-white shadow-md rounded-md p-1 border border-gray-200;
 }
 
+.tooltip {
+  @apply absolute pointer-events-none z-30 text-xs bg-gray-800 text-white rounded-md py-1 px-2 shadow-lg;
+}
+
+.tooltip.top {
+  @apply -translate-x-1/2 -translate-y-full;
+}
+
+.tooltip.top::before {
+  content: '';
+  @apply absolute block top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800;
+}
+
 @tailwind utilities;
 
 .dropdown-entrypoint-true::after {
