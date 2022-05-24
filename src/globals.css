@@ -18,6 +18,18 @@ a {
   @apply bg-white shadow-md rounded-md p-1 border border-gray-200;
 }
 
+.tab-bar {
+  @apply space-x-2 border-b border-gray-300 px-2;
+}
+
+.tab-bar-item {
+  @apply text-emerald-900 hover:bg-emerald-50 pt-3 px-5 pb-2 border-b-4 border-transparent;
+}
+
+.tab-bar-item:disabled {
+  @apply text-emerald-700 border-emerald-500;
+}
+
 .tooltip {
   @apply absolute pointer-events-none z-30 text-xs bg-gray-800 text-white rounded-md py-1 px-2 shadow-lg;
 }
@@ -29,6 +41,33 @@ a {
 .tooltip.top::before {
   content: '';
   @apply absolute block top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800;
+}
+
+.line-chart-line {
+  stroke-width: 2;
+  stroke-dasharray: 1500px;
+  stroke-dashoffset: 1500px;
+  animation: line-chart-line 1s both ease-out;
+}
+
+@keyframes line-chart-line {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.line-chart-gon {
+  fill-opacity: 0;
+  animation: line-chart-gon 1.2s both ease-out;
+}
+
+@keyframes line-chart-gon {
+  50% {
+    fill-opacity: 0;
+  }
+  100% {
+    fill-opacity: 1;
+  }
 }
 
 @tailwind utilities;
