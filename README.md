@@ -2,6 +2,12 @@
 
 Work in progress
 
+## Configuration
+
+| name                              | default | description                                                               |
+| --------------------------------- | ------- | ------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_DEFAULT_STORY_POINT` | `1`     | Default story point for tasks for which no story point has been assigned. |
+
 ## Available source locator types
 
 Each source locator could have the form `<TYPE>:<QUERY>`. `<TYPE>` defaults to `github` if `<TYPE>:` is omitted.

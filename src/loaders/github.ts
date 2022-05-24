@@ -86,7 +86,7 @@ export class GitHubLoader implements SourceLoader {
           if (!result.labels[label.name]) {
             result.labels[label.name] = {
               name: label.name,
-              color: label.color,
+              color: '#' + label.color,
             };
           }
           return [label.name];
