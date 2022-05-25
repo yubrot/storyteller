@@ -1,6 +1,6 @@
 import { interpolateBuGn as barColor } from 'd3-scale-chromatic';
 import { useMemo, useState } from 'react';
-import Tooltip, { useTooltip } from './common/Tooltip';
+import { useTooltip } from './common/tooltip';
 import Svg, { separateRect } from './svg/Svg';
 import LinearAxis from './svg/LinearAxis';
 import GroupAxis from './svg/GroupAxis';
@@ -30,8 +30,8 @@ export default function ProjectProgressChart({ project, className }: Props): Rea
       const total = project.total.snapshot(t).storyPoints;
       const completed = project.completed.snapshot(t).storyPoints;
       const percentage = total == 0 ? 100 : Math.floor((100 * completed) / total);
-      const tooltip = `${date}: ${completed}/${total} story points (${percentage}%)`;
-      data.push({ date, shortDate, total, completed, tooltip });
+      const tooltipText = `${date}: ${completed}/${total} story points (${percentage}%)`;
+      data.push({ date, shortDate, total, completed, tooltipText });
     }
 
     const bound = data.reduce((a, b) => Math.max(a, b.total), 0);
@@ -48,7 +48,7 @@ export default function ProjectProgressChart({ project, className }: Props): Rea
 
   return (
     <div className={className}>
-      <Tooltip handler={tooltip} />
+      <tooltip.Container />
       <Svg
         aspectRatio={[2, 1]}
         className="bg-gradient-to-b from-slate-500 to-slate-700 rounded-md shadow-lg"
@@ -87,14 +87,14 @@ export default function ProjectProgressChart({ project, className }: Props): Rea
               <LinearAxis {...left} position="left" range={[bound, 0]} />
               <GroupAxis {...bottom} position="bottom" labels={data.map(d => d.shortDate)} />
               <Group {...center} direction="right" data={data}>
-                {({ tooltip: text }, width, height, x) => (
+                {({ tooltipText }, width, height, x) => (
                   <rect
                     width={width}
                     height={height}
                     fill="transparent"
                     onMouseOver={ev => {
                       setFocusLine(x + width / 2);
-                      tooltip.show(ev.currentTarget, text);
+                      tooltip.show(ev.currentTarget, tooltipText);
                     }}
                   />
                 )}

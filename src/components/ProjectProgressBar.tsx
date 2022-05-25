@@ -2,7 +2,7 @@ import { interpolateBuGn as barColor } from 'd3-scale-chromatic';
 import { useMemo } from 'react';
 import Svg from './svg/Svg';
 import BarStack from './svg/BarStack';
-import Tooltip, { useTooltip } from './common/Tooltip';
+import { useTooltip } from './common/tooltip';
 import { dateTimeString } from '../date-time';
 import { ProjectReader } from '../project-reader';
 
@@ -39,12 +39,12 @@ export default function ProjectProgressBar({ project, className }: Props): React
       completedData.push({
         value: deltaCompleted,
         fill: barColor(0.9 - (d / recentDays) * 0.3),
-        tooltip: `Completed ${completed.current.storyPoints} story points${at}`,
+        tooltipText: `Completed ${completed.current.storyPoints} story points${at}`,
       });
       createdData.push({
         value: Math.max(deltaCreated - completedOffset, 0),
         fill: barColor(0.3 - (d / recentDays) * 0.2),
-        tooltip: `Total ${total.current.storyPoints} story points${at}`,
+        tooltipText: `Total ${total.current.storyPoints} story points${at}`,
       });
       completedOffset = Math.max(completedOffset - deltaCreated, 0);
     }
@@ -56,7 +56,7 @@ export default function ProjectProgressBar({ project, className }: Props): React
 
   return (
     <div className={`flex flex-col items-stretch ${className ?? ''}`}>
-      <Tooltip handler={tooltip} />
+      <tooltip.Container />
       <div className="py-2">
         <Svg aspectRatio={[24, 1]} className="rounded-md shadow-md">
           {(width, height) => (
@@ -65,10 +65,10 @@ export default function ProjectProgressBar({ project, className }: Props): React
               height={height}
               direction="right"
               data={data}
-              props={({ fill, tooltip: text }) => ({
+              props={({ fill, tooltipText }) => ({
                 fill,
                 className: 'filter hover:brightness-200',
-                onMouseOver: ev => tooltip.show(ev.currentTarget, text),
+                onMouseOver: ev => tooltip.show(ev.currentTarget, tooltipText),
                 onMouseOut: tooltip.clear,
               })}
             />

@@ -3,6 +3,7 @@ import type { SourceLocator } from '../source';
 import type { Project } from '../project';
 import { ProjectReader } from '../project-reader';
 import ProjectProgressBar from './ProjectProgressBar';
+import ProjectSprints from './ProjectSprints';
 import ProjectProgressChart from './ProjectProgressChart';
 
 export interface Props {
@@ -11,10 +12,10 @@ export interface Props {
   className?: string;
 }
 
-type Mode = 'progress';
+type Mode = 'sprints' | 'progress';
 
 export default function ProjectDetail({ source, data, className }: Props): React.ReactElement {
-  const [mode, setMode] = useState<Mode>('progress');
+  const [mode, setMode] = useState<Mode>('sprints');
   const project = useMemo(() => new ProjectReader(data), [data]);
 
   return (
@@ -36,6 +37,13 @@ export default function ProjectDetail({ source, data, className }: Props): React
         <div className="tab-bar">
           <button
             className="button tab-bar-item"
+            disabled={mode == 'sprints'}
+            onClick={() => setMode('sprints')}
+          >
+            Sprints
+          </button>
+          <button
+            className="button tab-bar-item"
             disabled={mode == 'progress'}
             onClick={() => setMode('progress')}
           >
@@ -44,6 +52,7 @@ export default function ProjectDetail({ source, data, className }: Props): React
         </div>
 
         <div className="m-4">
+          {mode == 'sprints' ? <ProjectSprints project={project} /> : null}
           {mode == 'progress' ? <ProjectProgressChart project={project} /> : null}
         </div>
       </div>

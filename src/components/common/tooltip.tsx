@@ -1,16 +1,18 @@
 import { useCallback, useState } from 'react';
 import ReactDOM from 'react-dom';
 
-export interface UseTooltip {
+export interface Tooltip {
+  Container(): React.ReactElement | null;
   current: { x: number; y: number; content: React.ReactNode } | null;
   show(el: Element, content: React.ReactNode): void;
   clear(): void;
 }
 
-export function useTooltip(): UseTooltip {
-  const [state, setState] = useState<UseTooltip['current']>(null);
+export function useTooltip(): Tooltip {
+  const [state, setState] = useState<Tooltip['current']>(null);
 
   return {
+    Container: () => <Container current={state} />,
     current: state,
     show: useCallback((el, content) => {
       const rect = el.getBoundingClientRect();
@@ -24,13 +26,13 @@ export function useTooltip(): UseTooltip {
   };
 }
 
-export interface Props {
-  handler: UseTooltip;
+interface ContainerProps {
+  current: Tooltip['current'];
 }
 
-export default function Tooltip({ handler }: Props): React.ReactElement | null {
-  if (!handler.current) return null;
-  const { x, y, content } = handler.current;
+function Container({ current }: ContainerProps): React.ReactElement | null {
+  if (!current) return null;
+  const { x, y, content } = current;
 
   return ReactDOM.createPortal(
     <div className="tooltip top" style={{ left: x, top: y }}>
