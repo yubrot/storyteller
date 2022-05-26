@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
+import Img from './common/Img';
 import { Workspace } from '../workspace';
 
 export interface Props {
@@ -16,7 +17,7 @@ export default function Header({ workspace, currentProject }: Props) {
       <div className="max-w-6xl mx-auto flex justify-between items-end p-2">
         <Link href="/">
           <a className="block border-b border-transparent hover:border-white">
-            <img src="/logo-vertical.png" alt="storyteller" className="h-8 brightness-0 invert" />
+            <Img src="logo-vertical.png" alt="storyteller" className="h-8 brightness-0 invert" />
           </a>
         </Link>
 

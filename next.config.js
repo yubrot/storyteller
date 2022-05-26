@@ -2,6 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   staticPageGenerationTimeout: 600,
+  basePath: process.env.NEXT_PUBLIC_ASSET_PREFIX?.replace(/\/$/, ''),
+  assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX?.replace(/\/$/, ''),
 
   webpack(config, { isServer }) {
     if (!isServer) {
