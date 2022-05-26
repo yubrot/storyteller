@@ -50,6 +50,7 @@ export default function Activities({
                   .map(({ id, url, color, avatarUrl }) => (
                     <a key={id} href={url ?? '#'} className="float-right block ml-1">
                       {avatarUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
                         <img src={avatarUrl} alt="icon" className="w-5 h-5 rounded-full" />
                       ) : (
                         <div

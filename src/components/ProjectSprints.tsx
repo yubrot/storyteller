@@ -22,11 +22,12 @@ export interface Props {
 }
 
 export default function ProjectSprints({ project, className }: Props): React.ReactElement {
+  const [sprintOffset, setSprintOffset] = useState(0);
   const numSprints = useMemo(
     () => Math.ceil((Date.now() - project.startAt - 1) / sprintDays),
     [project]
   );
-  const [end, setEnd] = useState(numSprints);
+  const end = Math.max(numSprints - sprintOffset, 0);
   const start = Math.max(end - 8, 0);
   const filters = useFilters();
 
@@ -115,9 +116,9 @@ export default function ProjectSprints({ project, className }: Props): React.Rea
                       : null
                   }
                   hasPrev={1 < end}
-                  onPrev={() => setEnd(end - 1)}
+                  onPrev={() => setSprintOffset(sprintOffset + 1)}
                   hasNext={end < numSprints}
-                  onNext={() => setEnd(end + 1)}
+                  onNext={() => setSprintOffset(sprintOffset - 1)}
                 />
                 <LinearAxis {...left} position="left" range={[bound, 0]} />
                 <GroupAxis
