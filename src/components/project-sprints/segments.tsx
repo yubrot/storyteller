@@ -25,6 +25,7 @@ export interface SegmentSource {
   query: Query;
   color: string;
   tooltipText(value: number): string;
+  labelText: string;
 }
 
 export function computeSegmentSources(project: ProjectReader, filters: Filters): SegmentSource[] {
@@ -34,9 +35,10 @@ export function computeSegmentSources(project: ProjectReader, filters: Filters):
     active: boolean,
     query: Query,
     color: string,
-    tooltipText: (value: number) => string
+    tooltipText: (value: number) => string,
+    labelText: string
   ): void {
-    sources.push({ active, color, query, tooltipText });
+    sources.push({ active, color, query, tooltipText, labelText });
   }
 
   switch (filters.completedGroup) {
@@ -45,7 +47,8 @@ export function computeSegmentSources(project: ProjectReader, filters: Filters):
         filters.completed,
         project.completed,
         palette.completedDefault,
-        v => `Completed ${v} story points`
+        v => `Completed ${v} story points`,
+        'velocity'
       );
       break;
     case 'by-assignee':
@@ -53,14 +56,16 @@ export function computeSegmentSources(project: ProjectReader, filters: Filters):
         filters.completed && filters.unassigned,
         project.query({ type: 'completed', assignee: null }),
         palette.void,
-        v => `Completed ${v} no one assigned story points`
+        v => `Completed ${v} no one assigned story points`,
+        'unassigned'
       );
       for (const { id, name, color } of project.assignees) {
         put(
           filters.completed && filters.assignee(id),
           project.query({ type: 'completed', assignee: id }),
           color,
-          v => `Completed ${v} story points by ${name}`
+          v => `Completed ${v} story points by ${name}`,
+          name
         );
       }
       break;
@@ -69,20 +74,28 @@ export function computeSegmentSources(project: ProjectReader, filters: Filters):
         filters.completed && filters.unlabeled,
         project.query({ type: 'completed', label: null }),
         palette.void,
-        v => `Completed ${v} unlabeled story points`
+        v => `Completed ${v} unlabeled story points`,
+        'unlabeled'
       );
       for (const { name, color } of project.labels) {
         put(
           filters.completed && filters.label(name),
           project.query({ type: 'completed', label: name }),
           color,
-          v => `Completed ${v} ${name} story points`
+          v => `Completed ${v} ${name} story points`,
+          name
         );
       }
       break;
   }
 
-  put(filters.created, project.total, palette.created, v => `Created ${v} story points`);
+  put(
+    filters.created,
+    project.total,
+    palette.created,
+    v => `Created ${v} story points`,
+    'avg created'
+  );
 
   return sources;
 }

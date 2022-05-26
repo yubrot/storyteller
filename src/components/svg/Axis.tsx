@@ -19,7 +19,8 @@ export interface Props {
 }
 
 export interface Label {
-  value: number; // [0,1], top to bottom or left to right
+  key?: string | number | null;
+  value: number; // must be in range
   text: string;
 }
 
@@ -72,12 +73,12 @@ export default function Axis({
           strokeWidth={1}
         />
       ) : null}
-      {labels.map(({ value, text }) => {
+      {labels.map(({ key, value, text }) => {
         const p = start < end ? (value - start) / (end - start) : 1 - (value - end) / (start - end);
         const mx = Math.floor(p * f.nx * width + f.mx);
         const my = Math.floor(p * f.ny * height + f.my);
         return (
-          <Fragment key={text}>
+          <Fragment key={key ?? text}>
             <text
               fontSize={fontSize}
               fill={textColor}

@@ -7,6 +7,7 @@ import GroupAxis from './svg/GroupAxis';
 import LineChart from './svg/LineChart';
 import Group from './svg/Group';
 import Title from './svg/Title';
+import Line from './svg/Line';
 import { dateString, shortDateString } from '../date-time';
 import { ProjectReader } from '../project-reader';
 
@@ -100,14 +101,11 @@ export default function ProjectProgressChart({ project, className }: Props): Rea
                 )}
               </Group>
               {focusLine !== null ? (
-                <line
-                  x1={focusLine + center.x}
-                  y1={center.y}
-                  x2={focusLine + center.x}
-                  y2={center.y + center.height}
-                  strokeWidth={1}
-                  stroke="white"
-                  strokeDasharray="2 2"
+                <Line
+                  {...center}
+                  value={focusLine / center.width}
+                  transition={false}
+                  mode="vertical"
                 />
               ) : null}
             </>

@@ -4,6 +4,8 @@ import GroupAxis from './svg/GroupAxis';
 import BarStackGroup from './svg/BarStackGroup';
 import Svg, { separateRect } from './svg/Svg';
 import Title from './svg/Title';
+import Line from './svg/Line';
+import Axis from './svg/Axis';
 import { useTooltip } from './common/tooltip';
 import { useFilters } from './project-sprints/filters';
 import { useSegments } from './project-sprints/segments';
@@ -37,8 +39,8 @@ export default function ProjectSprints({ project, className }: Props): React.Rea
     const graphStartAt = project.startAt - 1 + start * sprintDays;
     const total = project.total.snapshotChangesFrom(graphStartAt);
     const completed = project.completed.snapshotChangesFrom(graphStartAt);
-    const stack = segments.sources.map(s =>
-      s.active ? s.query.snapshotChangesFrom(graphStartAt) : null
+    const stack = segments.sources.map(segment =>
+      segment.active ? segment.query.snapshotChangesFrom(graphStartAt) : null
     );
 
     for (let i = start; i < end; ++i) {
@@ -65,6 +67,23 @@ export default function ProjectSprints({ project, className }: Props): React.Rea
     return { sprints, bound };
   }, [project, start, end, segments]);
 
+  const averages = useMemo(() => {
+    let offset = 0;
+    return segments.sources.map(({ active, labelText }, i) => {
+      if (!active || !labelText) return null;
+      const value = sprints.reduce((a, b) => a + b.data[i].value, 0) / sprints.length;
+      if (!value) return null;
+
+      offset += value;
+      const shortLabelText = `${labelText.substring(0, 11)}${11 < labelText.length ? '..' : ''}`;
+      return {
+        key: labelText,
+        value: offset,
+        text: `${shortLabelText}: ${Math.floor(value * 100) / 100}`,
+      };
+    });
+  }, [sprints, segments]);
+
   const tooltip = useTooltip();
   const [select, setSelect] = useState<{ query: string; start: number; end: number } | null>(null);
 
@@ -77,7 +96,12 @@ export default function ProjectSprints({ project, className }: Props): React.Rea
           className="bg-gradient-to-b from-slate-500 to-slate-700 rounded-md shadow-lg"
         >
           {(w, h) => {
-            const { center, top, left, bottom } = separateRect(w, h, [0.12, 0.88], [0.2, 0.9]);
+            const { center, top, left, right, bottom } = separateRect(
+              w,
+              h,
+              [0.08, 0.8],
+              [0.2, 0.9]
+            );
             return (
               <>
                 <segments.Defs />
@@ -85,12 +109,12 @@ export default function ProjectSprints({ project, className }: Props): React.Rea
                   {...top}
                   text={
                     sprints.length
-                      ? `${dateString(sprints[0].key)} - ${dateString(
-                          sprints[sprints.length - 1].key
-                        )}`
+                      ? dateString(sprints[0].key) +
+                        ' - ' +
+                        dateString(sprints[sprints.length - 1].key)
                       : null
                   }
-                  hasPrev={0 < start}
+                  hasPrev={1 < end}
                   onPrev={() => setEnd(end - 1)}
                   hasNext={end < numSprints}
                   onNext={() => setEnd(end + 1)}
@@ -119,6 +143,16 @@ export default function ProjectSprints({ project, className }: Props): React.Rea
                     };
                   }}
                 />
+                <Axis
+                  {...right}
+                  position="right"
+                  axisStroke={false}
+                  range={[bound, 0]}
+                  labels={averages.flatMap(a => (a ? [a] : []))}
+                />
+                {averages.map(a =>
+                  a ? <Line key={a.key} {...center} value={a.value} range={[bound, 0]} /> : null
+                )}
               </>
             );
           }}
