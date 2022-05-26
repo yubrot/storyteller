@@ -115,7 +115,7 @@ export class GitHubLoader implements SourceLoader {
    * Create a loader from a query string. See top-level README.md.
    */
   static fromQuery(q: string): GitHubLoader {
-    const parts = q.match(/^(\w+)\/(\w+)(?:\?(.*))?$/);
+    const parts = q.match(/^([-\w]+)\/([-\w]+)(?:\?(.*))?$/);
     if (!parts) throw new Error(`Invalid GitHub query ${q}: must be <OWNER>/<NAME>[?<OPTIONS>]`);
     const owner = parts[1];
     const name = parts[2];

@@ -1,10 +1,21 @@
-# storyteller
+<p align="center">
+<img src="./public/logo.png" alt="storyteller">
+</p>
 
-Work in progress
+Static site generator to visualize project progress. Accept GitHub issues as a source of information.
+
+## Usage
+
+![workflow](./.example/workflow.png)
+
+1. Copy `.env.example` to `.env.local` and configure it. (See below)
+2. Run `npm install && npm run build`.
+3. Serve `out/` and open it on your browser.
+4. (Cache `.workspace.json` to speed up the next build.)
 
 ## Configuration
 
-| name                              | default | description                                                               |
+| variable                          | default | description                                                               |
 | --------------------------------- | ------- | ------------------------------------------------------------------------- |
 | `SOURCES`                         | -       | A sequence of source locator separated by `,`.                            |
 | `NEXT_PUBLIC_RECENT_DAYS`         | `30`    | Range of days highlighted in a darker color on the progress bar.          |

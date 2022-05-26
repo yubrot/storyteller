@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  staticPageGenerationTimeout: 600,
 
   webpack(config, { isServer }) {
     if (!isServer) {
