@@ -2,7 +2,7 @@
 <img src="./public/logo.png" alt="storyteller">
 </p>
 
-Static site generator to visualize project progress. Accept GitHub issues as a source of information.
+Static site generator to visualize project progress. Accepts GitHub issues as a source of project progress.
 
 - [Visualization example](https://yubrot.github.io/storyteller/)
 
@@ -14,6 +14,28 @@ Static site generator to visualize project progress. Accept GitHub issues as a s
 2. Run `npm install && npm run build`.
 3. Serve `out/` and open it on your browser.
 4. (Cache `.workspace.json` to speed up the next build.)
+
+### Automate with GitHub Actions
+
+```bash
+# Add storyteller as a submodule to your project repository
+$ git submodule add https://github.com/yubrot/storyteller.git .storyteller
+
+# Prepare environment variables and workspace cache
+$ cat << EOM > .storyteller.env
+SOURCES=<owner>/<your-repo>
+NEXT_PUBLIC_ASSET_PREFIX=/<your-repo>/
+EOM
+$ echo '{"projects":[]}' > .storyteller.workspace.json
+
+# Initialize workflow (This will deploy the storyteller output to the project gh-pages every Friday)
+$ mkdir -p .github/workflows
+$ cp .storyteller/.example/storyteller-actions-workflow.yml .github/workflows
+
+$ git add .
+$ git commit
+$ git push
+```
 
 ## Configuration
 

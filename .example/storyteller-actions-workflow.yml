@@ -1,0 +1,50 @@
+# See https://github.com/yubrot/storyteller#readme
+name: storyteller-actions-workflow
+
+on:
+  schedule:
+    - cron: '0 0 * * 5'
+
+jobs:
+  storyteller-actions-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      # Put the configuration and the workspace cache
+      - run: |
+          cp .storyteller.env .storyteller/.env.local
+          cp .storyteller.workspace.json .storyteller/.workspace.json
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+
+      - run: npm ci
+        working-directory: ./.storyteller
+
+      # SSG
+      - run: npm run build
+        working-directory: ./.storyteller
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Deploy to gh-pages
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./.storyteller/out
+
+      # Commit the workspace cache
+      - run: |
+          cp .storyteller/.workspace.json .storyteller.workspace.json
+          if ! git diff --quiet --exit-code; then
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+            git add .storyteller.workspace.json
+            git commit -m "[skip ci] Cache the storyteller workspace"
+            git push
+          fi
