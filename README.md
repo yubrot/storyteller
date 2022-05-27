@@ -5,6 +5,7 @@
 Static site generator to visualize project progress. Accepts GitHub issues as a source of project progress.
 
 - [Visualization example](https://yubrot.github.io/storyteller/)
+- [Implementation Notes (Japanese)](https://zenn.dev/yubrot/articles/6f8a6d0098900c)
 
 ## Usage
 
@@ -15,7 +16,7 @@ Static site generator to visualize project progress. Accepts GitHub issues as a 
 3. Serve `out/` and open it on your browser.
 4. (Cache `.workspace.json` to speed up the next build.)
 
-### Automate with GitHub Actions
+### Automate with GitHub Actions to deploy to GitHub Pages
 
 ```bash
 # Add storyteller as a submodule to your project repository
