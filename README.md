@@ -3,13 +3,14 @@
 </p>
 
 Static site generator to visualize project progress. Accepts GitHub issues as a source of project progress.
+For example, the number of completed story points per sprint and their average velocity can be viewed.
 
 - [Visualization example](https://yubrot.github.io/storyteller/)
 - [Implementation Notes (Japanese)](https://zenn.dev/yubrot/articles/6f8a6d0098900c)
 
 ## Usage
 
-![workflow](./.example/workflow.png)
+![usage](./.example/usage.png)
 
 1. Copy `.env.example` to `.env.local` and configure it. (See below)
 2. Run `npm install && npm run build`.
@@ -17,6 +18,8 @@ Static site generator to visualize project progress. Accepts GitHub issues as a 
 4. (Cache `.workspace.json` to speed up the next build.)
 
 ### Automate with GitHub Actions to deploy to GitHub Pages
+
+This GitHub action deploy the storyteller output to the project gh-pages every Friday.
 
 ```bash
 # Add storyteller as a submodule to your project repository
@@ -29,7 +32,7 @@ NEXT_PUBLIC_ASSET_PREFIX=/<your-repo>/
 EOM
 $ echo '{"projects":[]}' > .storyteller.workspace.json
 
-# Initialize workflow (This will deploy the storyteller output to the project gh-pages every Friday)
+# Initialize Actions workflow
 $ mkdir -p .github/workflows
 $ cp .storyteller/.example/storyteller-actions-workflow.yml .github/workflows
 
@@ -54,9 +57,11 @@ Each source locator could have the form `<TYPE>:<QUERY>`. `<TYPE>` defaults to `
 
 ### `github:<OWNER>/<NAME>[?<OPTIONS>]`
 
+![github](./.example/github.png)
+
 [GitHub CLI](https://github.com/cli/cli#installation) is required.
 
-Treat the GitHub repository `<OWNER>/<NAME>` as a source. Each issue is considered a task, and the label named `sp:<STORY_POINT>` is considered a story point assignment. Closed issues are considered completed tasks.
+Treat the GitHub repository `<OWNER>/<NAME>` as a source. Each issue is considered a task, and **the label named `sp:<STORY_POINT>` is considered a story point assignment**. Closed issues are considered completed tasks.
 
 `<OPTIONS>` consists of a sequence of options separated by `&`. Valid options are:
 
